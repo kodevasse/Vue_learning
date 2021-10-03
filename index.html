@@ -6,24 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <title>Vue from scratch</title>
+
   </head>
   <body>
     <div id="app">
+      <h1 v-if="hidden">Hidden is true</h1>
+      <h1 v-else>Hidden if false</h1>
       <ul>
         <li v-for="todo in items">{{ todo }}</li>
+        <li v-for="item1 in item1s">
+          {{ item1.text }}
+          <div v-if="item1.checked">Checked!</div>
+
+          <button @click="item1.checked =! item1.checked">Toggle</button>
+        </li>
       </ul>
 
       <input type="text" v-model="item" />
       <button @click="items.push(item)">Add item</button>
+    <div>
+      <input type='text' v-model='price'>
+      <div>Tax {{ taxFormatted }}</div>
+      <div>Total {{ totalFormatted }}</div>
     </div>
     <script>
       new Vue({
         el: '#app',
 
         data: {
+          price: 100,
+          hidden: true,
           item: '',
+          item1: '',
           items: ['item1', 'item2'],
+          item1s: [
+            { text: 'item11', checked: true },
+            { text: 'item22', checked: false },
+            { text: 'item22', checked: false },
+          ],
         },
+        computed:{
+          tax: function () {
+            return this.price * 0.2;
+          },
+          taxFormatted: function () {
+            return '$' + this.tax;
+          },
+          total: function () {
+            return parseInt(this.price) + this.tax
+          },
+          totalFormatted: function () {
+            return '$' + this.total;
+          }
+        }
       });
     </script>
   </body>
