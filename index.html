@@ -26,8 +26,8 @@
       <button @click="items.push(item)">Add item</button>
     <div>
       <input type='text' v-model='price'>
-      <div>Tax {{ taxFormatted }}</div>
-      <div>Total {{ totalFormatted }}</div>
+      <div>Tax {{ moneyFormat(tax) }}</div>
+      <div>Total {{ moneyFormat(total) }}</div>
     </div>
     <script>
       new Vue({
@@ -45,6 +45,11 @@
             { text: 'item22', checked: false },
           ],
         },
+        methods: {
+          moneyFormat: function (price) {
+            return '$' + price + '.00';
+          },
+        },
         computed:{
           tax: function () {
             return this.price * 0.2;
@@ -55,9 +60,6 @@
           total: function () {
             return parseInt(this.price) + this.tax
           },
-          totalFormatted: function () {
-            return '$' + this.total;
-          }
         }
       });
     </script>
