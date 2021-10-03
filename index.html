@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    
     <title>Vue from scratch</title>
 
   </head>
+  
   <body>
+    
     <div id="app">
       <h1 v-if="hidden">Hidden is true</h1>
       <h1 v-else>Hidden if false</h1>
@@ -28,14 +30,35 @@
       <input type='text' v-model='price'>
       <div>Tax {{ moneyFormat(tax) }}</div>
       <div>Total {{ moneyFormat(total) }}</div>
+      <accordion v-for="item2 in item2s" :key='item.id' :item="item2"></accordion>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script>
+
+      Vue.component('accordion', {
+        props: ['item'],
+        
+        template:  `
+        <div>
+          <p>{{item.title}}</p>
+          <p @click='toggle = ! toggle'>Details</p>
+          <p v-if='toggle'>{{ item.description}}</p>
+        </div>
+        `,
+        data: function () {
+          return {
+            toggle: false,
+          }
+        }
+      });
       new Vue({
         el: '#app',
 
         data: {
           price: 100,
           hidden: true,
+          
           item: '',
           item1: '',
           items: ['item1', 'item2'],
@@ -44,6 +67,12 @@
             { text: 'item22', checked: false },
             { text: 'item22', checked: false },
           ],
+          item2s: [
+            { id: 1,title: 'Title 1', description: 'Description for tab 1.'},
+            { id: 2,title: 'Title 2', description: 'Description for tab 2.'},
+            { id: 3,title: 'Title 3', description: 'Description for tab 3.'},
+
+          ]
         },
         methods: {
           moneyFormat: function (price) {
